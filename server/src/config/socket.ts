@@ -4,12 +4,16 @@ import { Server } from 'socket.io';
 
 import { Message } from '../models/Message';
 
-import type { Activities, ClientToServerEvents } from '../types/socket';
+import type {
+  Activities,
+  ClientToServerEvents,
+  ServerToClientEvents,
+} from '../types/socket';
 
 type HTTPServer = ReturnType<typeof createServer>;
 
 export const initializeSocket = (server: HTTPServer) => {
-  const io = new Server<ClientToServerEvents, any, {}, never>(server, {
+  const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
     cors: {
       origin: 'http://localhost:3000',
       credentials: true,
