@@ -22,7 +22,7 @@ export default function FriendsActivity() {
   });
 
   return (
-    <div className="flex flex-col h-full rounded-lg bg-zinc-900">
+    <aside className="flex flex-col h-full rounded-lg bg-zinc-900">
       <div className="flex items-center justify-between p-4 border-b border-zinc-800">
         <div className="flex items-center gap-2">
           <Users className="size-5 shrink-0" />
@@ -34,13 +34,13 @@ export default function FriendsActivity() {
 
       {isSuccess && (
         <ScrollArea className="flex-1">
-          <div className="p-4 space-y-4">
+          <ul className="p-4 space-y-4">
             {users.map(user => {
               const activity = userActivities.get(user.clerkId);
               const isPlaying = activity && activity !== 'Idle';
 
               return (
-                <div
+                <li
                   key={user._id}
                   className="p-3 transition-colors rounded-md cursor-pointer hover:bg-zinc-800/50 group"
                 >
@@ -82,13 +82,13 @@ export default function FriendsActivity() {
                       )}
                     </div>
                   </div>
-                </div>
+                </li>
               );
             })}
-          </div>
+          </ul>
         </ScrollArea>
       )}
-    </div>
+    </aside>
   );
 }
 

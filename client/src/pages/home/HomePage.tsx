@@ -47,7 +47,7 @@ export default function HomePage() {
   }, [initializeQueue, madeForYouSongs, trendingSongs, queryClient]);
 
   return (
-    <main className="h-full overflow-hidden rounded-md bg-gradient-to-b from-zinc-800 to-zinc-900">
+    <section className="h-full overflow-hidden rounded-md bg-gradient-to-b from-zinc-800 to-zinc-900">
       <TopBar />
 
       <ScrollArea className="h-[calc(100vh-180px)]">
@@ -73,6 +73,6 @@ export default function HomePage() {
           </div>
         </div>
       </ScrollArea>
-    </main>
+    </section>
   );
 }

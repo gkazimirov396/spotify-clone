@@ -31,22 +31,6 @@ export default function SongTable() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['songs'] }),
   });
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-8">
-        <div className="text-zinc-400">Loading songs...</div>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="flex items-center justify-center py-8">
-        <div className="text-red-400">{error.message}</div>
-      </div>
-    );
-  }
-
   return (
     <Table>
       <TableHeader>
@@ -60,6 +44,16 @@ export default function SongTable() {
       </TableHeader>
 
       <TableBody>
+        {isLoading && (
+          <div className="flex items-center justify-center py-8">
+            <div className="text-zinc-400">Loading songs...</div>
+          </div>
+        )}
+        {isError && (
+          <div className="flex items-center justify-center py-8">
+            <div className="text-red-400">{error.message}</div>
+          </div>
+        )}
         {isSuccess &&
           songs.map(song => (
             <TableRow key={song._id} className="hover:bg-zinc-800/50">

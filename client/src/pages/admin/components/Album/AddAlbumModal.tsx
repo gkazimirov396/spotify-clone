@@ -51,11 +51,7 @@ export default function AddAlbumModal() {
 
       const formData = new FormData(event.currentTarget);
 
-      // formData.append("title", newAlbum.title);
-      // formData.append("artist", newAlbum.artist);
-      // formData.append("releaseYear", newAlbum.releaseYear.toString());
       formData.append('imageFile', imageFile);
-      console.log('Release year', formData.get('releaseYear'));
 
       await createAlbum(formData);
 
@@ -77,7 +73,7 @@ export default function AddAlbumModal() {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="bg-zinc-900 border-zinc-700">
+      <DialogContent className="text-white bg-zinc-900 border-zinc-700">
         <DialogHeader>
           <DialogTitle>Add New Album</DialogTitle>
 
@@ -109,7 +105,11 @@ export default function AddAlbumModal() {
                   {imageFile ? imageFile.name : 'Upload album artwork'}
                 </div>
 
-                <Button variant="outline" size="sm" className="text-xs">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="text-xs text-black"
+                >
                   Choose File
                 </Button>
               </div>
@@ -164,6 +164,7 @@ export default function AddAlbumModal() {
           <DialogFooter>
             <Button
               variant="outline"
+              className="text-black"
               onClick={() => setIsModalOpen(false)}
               disabled={isPending}
             >

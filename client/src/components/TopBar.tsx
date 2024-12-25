@@ -22,7 +22,7 @@ export default function TopBar() {
   });
 
   return (
-    <div className="sticky top-0 z-10 flex items-center justify-between p-4 bg-zinc-900/75 backdrop-blur-md ">
+    <header className="sticky top-0 z-10 flex items-center justify-between p-4 bg-zinc-900/75 backdrop-blur-md ">
       <div className="flex items-center gap-2">
         <img src={spotifyLogo} className="size-8" alt="Spotify logo" />
         Spotify
@@ -45,6 +45,6 @@ export default function TopBar() {
 
         <UserButton appearance={{ baseTheme: dark }} />
       </div>
-    </div>
+    </header>
   );
 }

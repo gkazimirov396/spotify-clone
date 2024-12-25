@@ -1,12 +1,13 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Clock, Loader, Pause, Play } from 'lucide-react';
+import { Clock, Pause, Play } from 'lucide-react';
 
 import { usePlayerStore } from '@/store/player';
 
 import albumService from '@/services/album';
 
 import { ScrollArea } from '@/components/ui/scroll-area';
+import LoaderElement from '@/components/LoaderElement';
 import { Button } from '@/components/ui/button';
 
 import { formatSongDuration } from '@/utils/time';
@@ -21,12 +22,7 @@ export default function AlbumPage() {
     enabled: !!albumId,
   });
 
-  if (isLoading)
-    return (
-      <div className="flex items-center justify-center w-full h-screen">
-        <Loader className="size-8 text-emerald-500 animate-spin" />
-      </div>
-    );
+  if (isLoading) return <LoaderElement />;
 
   const isCurrentAlbumPlaying = currentAlbum?.songs.some(
     song => song._id === currentSong?._id

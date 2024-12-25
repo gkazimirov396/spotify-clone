@@ -97,7 +97,7 @@ export default function AddSongModal() {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="bg-zinc-900 border-zinc-700 max-h-[80vh] overflow-auto">
+      <DialogContent className="bg-zinc-900 text-white border-zinc-700 max-h-[80vh] overflow-auto">
         <DialogHeader>
           <DialogTitle>Add New Song</DialogTitle>
 
@@ -154,7 +154,11 @@ export default function AddSongModal() {
                       Upload artwork
                     </div>
 
-                    <Button variant="outline" size="sm" className="text-xs">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-xs text-black"
+                    >
                       Choose File
                     </Button>
                   </>
@@ -169,7 +173,7 @@ export default function AddSongModal() {
                 <Button
                   variant="outline"
                   onClick={() => audioInputRef.current?.click()}
-                  className="w-full"
+                  className="w-full text-black"
                 >
                   {files.audio
                     ? files.audio.name.slice(0, 20)
@@ -237,12 +241,14 @@ export default function AddSongModal() {
         <DialogFooter>
           <Button
             variant="outline"
+            className="text-black"
             onClick={() => setIsModalOpen(false)}
             disabled={isPending}
           >
             Cancel
           </Button>
-          <Button disabled={isPending}>
+
+          <Button disabled={isPending || !files.audio || !files.image}>
             {isPending ? 'Uploading...' : 'Add Song'}
           </Button>
         </DialogFooter>

@@ -3,11 +3,12 @@ import { useEffect, useState } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { useAuth } from '@clerk/clerk-react';
 import { Toaster } from 'react-hot-toast';
-import { Loader } from 'lucide-react';
 
 import axios from './lib/axios';
 
 import { useChatStore } from './store/chat';
+
+import LoaderElement from './components/LoaderElement';
 
 import { router } from './router/router';
 
@@ -46,12 +47,7 @@ function App() {
     return () => disconnectSocket();
   }, [getToken, userId, initSocket, disconnectSocket]);
 
-  if (isLoading)
-    return (
-      <div className="flex items-center justify-center w-full h-screen">
-        <Loader className="size-8 text-emerald-500 animate-spin" />
-      </div>
-    );
+  if (isLoading) return <LoaderElement />;
 
   return (
     <>

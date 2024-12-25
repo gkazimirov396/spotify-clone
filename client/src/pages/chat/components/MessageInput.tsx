@@ -27,7 +27,7 @@ export default function MessageInput() {
     <div className="p-4 mt-auto border-t border-zinc-800">
       <div className="flex gap-2">
         <Input
-          placeholder="Type a message"
+          placeholder="Type a message..."
           value={newMessage}
           onChange={e => setNewMessage(e.target.value)}
           className="border-none bg-zinc-800"

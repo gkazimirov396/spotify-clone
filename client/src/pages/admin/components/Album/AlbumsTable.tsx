@@ -17,7 +17,13 @@ import {
 export default function AlbumsTable() {
   const queryClient = useQueryClient();
 
-  const { data: albums, isSuccess } = useQuery({
+  const {
+    data: albums,
+    isSuccess,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ['albums'],
     queryFn: albumService.getAlbums,
   });
@@ -42,6 +48,16 @@ export default function AlbumsTable() {
       </TableHeader>
 
       <TableBody>
+        {isLoading && (
+          <div className="flex items-center justify-center py-8">
+            <div className="text-zinc-400">Loading albums...</div>
+          </div>
+        )}
+        {isError && (
+          <div className="flex items-center justify-center py-8">
+            <div className="text-red-400">{error.message}</div>
+          </div>
+        )}
         {isSuccess &&
           albums.map(album => (
             <TableRow key={album._id} className="hover:bg-zinc-800/50">
