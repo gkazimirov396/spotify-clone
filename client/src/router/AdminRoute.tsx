@@ -16,6 +16,7 @@ export default function AdminRoute() {
   } = useQuery({
     queryKey: ['admin', 'status'],
     queryFn: authService.checkAdminStatus,
+    staleTime: Infinity,
   });
 
   if (!isSignedIn) return <RedirectToSignUp />;

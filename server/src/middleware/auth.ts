@@ -5,8 +5,6 @@ import { env } from '../config/env';
 
 import { ServerError } from '../utils/ServerError';
 
-// export const protectedRoute = requireAuth({ signInUrl: '/auth/callback' });
-
 export const protectedRoute: RequestHandler = async (req, res, next) => {
   try {
     const auth = getAuth(req);

@@ -28,7 +28,7 @@ function App() {
   useEffect(() => {
     const initAuth = async () => {
       try {
-        const token = await getToken();
+        const token = await getToken({ template: 'default' });
         updateApiToken(token);
 
         if (token && userId) {
