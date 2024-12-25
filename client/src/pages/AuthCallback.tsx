@@ -1,40 +1,49 @@
-import { useEffect, useRef } from 'react';
-
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 import { Loader } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 import authService from '@/services/auth';
 
+import useSingleEffect from '@/hooks/useSingleEffect';
+
 import { Card, CardContent } from '@/components/ui/card';
 
+import { RoutePath } from '@/router/path';
+
 export default function AuthCallback() {
+  const queryClient = useQueryClient();
+
   const { isLoaded, user } = useUser();
   const navigate = useNavigate();
 
-  const syncAttempted = useRef(false);
+  const { mutateAsync: login } = useMutation({
+    mutationFn: authService.login,
+    onError: error => toast.error(error.message),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ['admin', 'status'] }),
+  });
 
-  useEffect(() => {
+  useSingleEffect(() => {
     const syncUser = async () => {
-      if (!isLoaded || !user || syncAttempted.current) return;
+      if (!isLoaded || !user) return;
 
       try {
-        syncAttempted.current = true;
-
-        await authService.login({
+        await login({
           id: user.id,
-          userName: user.username ?? '',
+          userName: user.fullName ?? '',
           imageUrl: user.imageUrl,
         });
       } catch (error) {
         console.log('Error in auth callback', error);
       } finally {
-        navigate('/');
+        navigate(RoutePath.HOME, { replace: true });
       }
     };
 
     syncUser();
-  }, [isLoaded, user, navigate]);
+  });
 
   return (
     <section className="flex items-center justify-center w-full h-screen bg-black">

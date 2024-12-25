@@ -1,16 +1,26 @@
 import toast from 'react-hot-toast';
 
-import axios from '@/lib/axios';
+import axios, { formDataHeaders } from '@/lib/axios';
+
+import type { Album } from '@/types';
 
 class AlbumService {
   public async getAlbums() {
-    const response = await axios.get('/albums');
+    const response = await axios.get<Album[]>('/albums');
 
     return response.data;
   }
 
   public async getAlbumById(id: string) {
-    const response = await axios.get(`/albums/${id}`);
+    const response = await axios.get<Album>(`/albums/${id}`);
+
+    return response.data;
+  }
+
+  public async createAlbum(data: FormData) {
+    const response = await axios.post('/admin/albums', data, {
+      headers: formDataHeaders,
+    });
 
     return response.data;
   }

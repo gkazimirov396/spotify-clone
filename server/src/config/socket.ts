@@ -5,7 +5,6 @@ import { Server } from 'socket.io';
 import { Message } from '../models/Message';
 
 import type {
-  Activities,
   ClientToServerEvents,
   ServerToClientEvents,
 } from '../types/socket';
@@ -21,7 +20,7 @@ export const initializeSocket = (server: HTTPServer) => {
   });
 
   const userSockets = new Map<string, string>();
-  const userActivities = new Map<string, Activities>();
+  const userActivities = new Map<string, string>();
 
   io.on('connection', socket => {
     socket.on('user_connected', userId => {

@@ -2,6 +2,7 @@
   "compilerOptions": {
     "allowImportingTsExtensions": true,
     "module": "NodeNext",
+    "target": "ES2016",
     "rootDir": "./src",
     "moduleResolution": "NodeNext",
     "allowJs": false,

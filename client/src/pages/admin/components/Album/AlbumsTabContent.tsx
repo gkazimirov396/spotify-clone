@@ -1,5 +1,8 @@
 import { Library } from 'lucide-react';
 
+import AlbumsTable from './AlbumsTable';
+import AddAlbumModal from './AddAlbumModal';
+
 import {
   Card,
   CardContent,
@@ -16,16 +19,19 @@ export default function AlbumsTabContent() {
           <div>
             <CardTitle className="flex items-center gap-2">
               <Library className="w-5 h-5 text-violet-500" />
-              Albums Library
+              <span className="text-white">Albums Library</span>
             </CardTitle>
 
             <CardDescription>Manage your album collection</CardDescription>
           </div>
-          {/* <AddAlbumDialog /> */}
+
+          <AddAlbumModal />
         </div>
       </CardHeader>
 
-      <CardContent>{/* <AlbumsTable /> */}</CardContent>
+      <CardContent>
+        <AlbumsTable />
+      </CardContent>
     </Card>
   );
 }

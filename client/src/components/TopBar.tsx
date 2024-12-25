@@ -1,17 +1,25 @@
 import { SignedOut, UserButton } from '@clerk/clerk-react';
 import { LayoutDashboardIcon } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 
 import { cn } from '@/lib/utils';
+
+import authService from '@/services/auth';
 
 import SignInButtons from './SignInButtons';
 
 import { buttonVariants } from './ui/button';
 
-import spotifyLogo from '@/assets/spotify.png';
+import { RoutePath } from '@/router/path';
+
+import spotifyLogo from '@/assets/images/spotify.png';
 
 export default function TopBar() {
-  const isAdmin = false; // TODO: Add react query
+  const { data: isAdmin } = useQuery<boolean>({
+    queryKey: ['admin', 'status'],
+    queryFn: authService.checkAdminStatus,
+  });
 
   return (
     <div className="sticky top-0 z-10 flex items-center justify-between p-4 bg-zinc-900/75 backdrop-blur-md ">
@@ -23,8 +31,8 @@ export default function TopBar() {
       <div className="flex items-center gap-4">
         {isAdmin && (
           <Link
-            to="/admin"
-            className={cn(buttonVariants({ variant: 'outline' }))}
+            to={RoutePath.ADMIN}
+            className={cn(buttonVariants({ variant: 'default' }))}
           >
             <LayoutDashboardIcon className="mr-2 size-4" />
             Admin Dashboard

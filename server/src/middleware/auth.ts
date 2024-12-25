@@ -4,7 +4,9 @@ import { getAuth, clerkClient } from '@clerk/express';
 import { env } from '../config/env';
 
 import { ServerError } from '../utils/ServerError';
-// TODO: Look into {requireAuth} from clerk
+
+// export const protectedRoute = requireAuth({ signInUrl: '/auth/callback' });
+
 export const protectedRoute: RequestHandler = async (req, res, next) => {
   try {
     const auth = getAuth(req);

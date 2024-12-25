@@ -14,10 +14,14 @@ class AuthService {
   }
 
   public async login(user: NewUser) {
-    const response = await axios.post<{ success: true }>(
+    const response = await axios.post<{ success: boolean }>(
       '/auth/callback',
       user
     );
+
+    if (!response.data.success) {
+      throw new Error('Login failed');
+    }
 
     return response.data;
   }

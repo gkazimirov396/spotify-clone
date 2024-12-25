@@ -13,8 +13,8 @@ const EnvSchema = z.object({
   CLOUDINARY_API_SECRET: z.string().min(1),
   CLOUDINARY_CLOUD_NAME: z.string().min(1),
 
-  CLERK_SECRET_KEY: z.string().min(1),
-  CLERK_PUBLISHABLE_KEY: z.string().min(1),
+  CLERK_SECRET_KEY: z.string().min(1).startsWith('sk_'),
+  CLERK_PUBLISHABLE_KEY: z.string().min(1).startsWith('pk_'),
 });
 
 export const env = EnvSchema.parse(process.env);

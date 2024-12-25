@@ -1,13 +1,15 @@
 import { UserButton } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
 
-import spotifyLogo from '@/assets/spotify.png';
+import { RoutePath } from '@/router/path';
+
+import spotifyLogo from '@/assets/images/spotify.png';
 
 export default function AdminHeader() {
   return (
     <header className="flex items-center justify-between">
       <div className="flex items-center gap-3 mb-8">
-        <Link to="/" className="rounded-lg">
+        <Link to={RoutePath.HOME} className="rounded-lg">
           <img src={spotifyLogo} className="text-black size-10" />
         </Link>
 

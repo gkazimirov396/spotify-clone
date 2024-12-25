@@ -2,7 +2,14 @@ import { AuthenticateWithRedirectCallback } from '@clerk/clerk-react';
 import { createBrowserRouter } from 'react-router-dom';
 
 import NotFound from '@/pages/NotFound';
+import AlbumPage from '@/pages/AlbumPage';
+import ChatPage from '@/pages/chat/ChatPage';
+import HomePage from '@/pages/home/HomePage';
 import AuthCallback from '@/pages/AuthCallback';
+import AdminPage from '@/pages/admin/AdminPage';
+
+import PrivateRoute from './PrivateRoute';
+import AdminRoute from './AdminRoute';
 
 import RootLayout from '@/components/layout/RootLayout';
 
@@ -14,15 +21,21 @@ export const router = createBrowserRouter([
     children: [
       {
         path: RoutePath.HOME,
-        // element: <Home />
+        element: <HomePage />,
       },
       {
         path: RoutePath.CHAT,
-        // element: <Chat />
+        element: <PrivateRoute />,
+        children: [
+          {
+            index: true,
+            element: <ChatPage />,
+          },
+        ],
       },
       {
         path: RoutePath.ALBUM,
-        // element: <Album />
+        element: <AlbumPage />,
       },
       {
         path: RoutePath.NOT_FOUND,
@@ -32,7 +45,13 @@ export const router = createBrowserRouter([
   },
   {
     path: RoutePath.ADMIN,
-    // element: <Admin />
+    element: <AdminRoute />,
+    children: [
+      {
+        index: true,
+        element: <AdminPage />,
+      },
+    ],
   },
   {
     path: RoutePath.AUTH_CALLBACK,

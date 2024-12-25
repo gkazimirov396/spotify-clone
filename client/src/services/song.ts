@@ -1,28 +1,38 @@
 import toast from 'react-hot-toast';
 
-import axios from '@/lib/axios';
+import axios, { formDataHeaders } from '@/lib/axios';
+
+import type { Song } from '@/types';
 
 class SongService {
   public async getSongs() {
-    const response = await axios.get('/songs');
+    const response = await axios.get<Song[]>('/songs');
 
     return response.data;
   }
 
   public async getTrendingSongs() {
-    const response = await axios.get('/songs/trending');
+    const response = await axios.get<Song[]>('/songs/trending');
 
     return response.data;
   }
 
   public async getMadeForYouSongs() {
-    const response = await axios.get('/songs/made-for-you');
+    const response = await axios.get<Song[]>('/songs/made-for-you');
 
     return response.data;
   }
 
   public async getFeaturedSongs() {
-    const response = await axios.get('/songs/featured');
+    const response = await axios.get<Song[]>('/songs/featured');
+
+    return response.data;
+  }
+
+  public async createSong(data: FormData) {
+    const response = await axios.post('/admin/songs', data, {
+      headers: formDataHeaders,
+    });
 
     return response.data;
   }
