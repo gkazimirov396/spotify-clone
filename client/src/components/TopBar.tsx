@@ -2,14 +2,14 @@ import { SignedOut, UserButton } from '@clerk/clerk-react';
 import { LayoutDashboardIcon } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-
-import { cn } from '@/lib/utils';
+import { dark } from '@clerk/themes';
 
 import authService from '@/services/auth';
 
-import SignInButtons from './SignInButtons';
-
+import { cn } from '@/lib/utils';
 import { buttonVariants } from './ui/button';
+
+import SignInButtons from './SignInButtons';
 
 import { RoutePath } from '@/router/path';
 
@@ -43,7 +43,7 @@ export default function TopBar() {
           <SignInButtons />
         </SignedOut>
 
-        <UserButton />
+        <UserButton appearance={{ baseTheme: dark }} />
       </div>
     </div>
   );

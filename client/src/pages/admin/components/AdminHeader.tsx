@@ -1,5 +1,6 @@
 import { UserButton } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
+import { dark } from '@clerk/themes';
 
 import { RoutePath } from '@/router/path';
 
@@ -19,7 +20,7 @@ export default function AdminHeader() {
         </div>
       </div>
 
-      <UserButton />
+      <UserButton appearance={{ baseTheme: dark }} />
     </header>
   );
 }

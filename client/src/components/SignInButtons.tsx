@@ -23,7 +23,7 @@ export default function SignInButtons() {
         <Button
           variant="secondary"
           onClick={signInWithGoogle}
-          className="w-full text-white border-zinc-200 h-11"
+          className="w-full border-zinc-200 h-11"
         >
           <img className="size-5" src={google} alt="Google" />
           Continue with Google

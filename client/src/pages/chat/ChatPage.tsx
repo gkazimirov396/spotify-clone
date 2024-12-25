@@ -26,36 +26,20 @@ export default function ChatPage() {
 
   const queryClient = useQueryClient();
 
-  // const {
-  //   data: messages,
-  //   isSuccess,
-  //   isError,
-  //   error,
-  // } = useQuery({
-  //   queryKey: ['users', 'messages', selectedUser?.clerkId],
-  //   queryFn: () => userService.fetchUserMessages(selectedUser!.clerkId),
-  //   enabled: !!selectedUser,
-  // });
-  // TODO: messages are needed in useChatStore
+  if (error) showBoundary(error);
 
   useEffect(() => {
     if (user) {
-      queryClient.invalidateQueries({ queryKey: ['users'] });
-      // TODO: maybe remove it
+      queryClient.invalidateQueries({
+        queryKey: ['users'],
+        refetchType: 'all',
+      });
     }
   }, [queryClient, user]);
-
-  if (error) showBoundary(error);
-
-  // useEffect(() => {
-  //   if (user) fetchUsers();
-  // }, [fetchUsers, user]);
 
   useEffect(() => {
     if (selectedUser) fetchMessages(selectedUser.clerkId);
   }, [selectedUser, fetchMessages]);
-
-  console.log({ messages });
 
   return (
     <section className="h-full overflow-hidden rounded-lg bg-gradient-to-b from-zinc-800 to-zinc-900">
@@ -70,9 +54,9 @@ export default function ChatPage() {
               <ChatHeader />
 
               <ScrollArea className="h-[calc(100vh-340px)]">
-                <div className="p-4 space-y-4">
+                <ul className="p-4 space-y-4">
                   {messages.map(message => (
-                    <div
+                    <li
                       key={message._id}
                       className={`flex items-start gap-3 ${
                         message.senderId === user?.id ? 'flex-row-reverse' : ''
@@ -98,9 +82,9 @@ export default function ChatPage() {
                           {formatMessageTime(message.createdAt)}
                         </span>
                       </div>
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </ScrollArea>
 
               <MessageInput />
