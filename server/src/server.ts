@@ -6,6 +6,7 @@ import express from 'express';
 
 import cors from 'cors';
 import helmet from 'helmet';
+import morgan from 'morgan';
 import cron from 'node-cron';
 import fileUpload from 'express-fileupload';
 import { clerkMiddleware } from '@clerk/express';
@@ -44,6 +45,7 @@ app.use(
   })
 );
 app.use(helmet());
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(clerkMiddleware());

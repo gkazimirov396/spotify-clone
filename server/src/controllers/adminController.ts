@@ -148,7 +148,7 @@ const deleteAlbum: RequestHandlerWithDynamicId = async (req, res, next) => {
     ]);
 
     res.status(200).json({
-      success: songResult.deletedCount > 0 && !!albumResult,
+      success: songResult.acknowledged && !!albumResult,
     });
   } catch (error) {
     console.log('Error in deleteAlbum');
