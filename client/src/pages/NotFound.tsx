@@ -1,13 +1,13 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Home, Music2 } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+
+import { buttonVariants } from '@/components/ui/button';
 
 import { RoutePath } from '@/router/path';
 
 export default function NotFound() {
-  const navigate = useNavigate();
-
   return (
     <section className="flex items-center justify-center h-screen bg-neutral-900">
       <div className="px-4 space-y-8 text-center">
@@ -25,21 +25,32 @@ export default function NotFound() {
         </div>
 
         <div className="flex flex-col items-center justify-center gap-4 mt-8 sm:flex-row">
-          <Button
-            variant="outline"
-            onClick={() => navigate(-1)}
-            className="w-full text-white bg-neutral-800 hover:bg-neutral-700 border-neutral-700 sm:w-auto"
+          <Link
+            to=".."
+            className={cn(
+              buttonVariants({
+                variant: 'outline',
+                className:
+                  'w-full text-white bg-neutral-800 hover:bg-neutral-700 border-neutral-700 sm:w-auto',
+              })
+            )}
           >
             Go Back
-          </Button>
+          </Link>
 
-          <Button
-            onClick={() => navigate(RoutePath.HOME)}
-            className="w-full text-white bg-emerald-500 hover:bg-emerald-600 sm:w-auto"
+          <Link
+            to={RoutePath.HOME}
+            className={cn(
+              buttonVariants({
+                variant: 'default',
+                className:
+                  'w-full text-white bg-emerald-500 hover:bg-emerald-600 sm:w-auto',
+              })
+            )}
           >
             <Home className="w-4 h-4 mr-2" />
             Back to Home
-          </Button>
+          </Link>
         </div>
       </div>
     </section>
