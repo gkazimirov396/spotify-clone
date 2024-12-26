@@ -1,10 +1,12 @@
 import { FormEvent, useRef, useState } from 'react';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-
-import albumService from '@/services/album';
-import songService from '@/services/song';
+import { Plus, Upload } from 'lucide-react';
 import toast from 'react-hot-toast';
+
+import songService from '@/services/song';
+import albumService from '@/services/album';
+
 import {
   Dialog,
   DialogContent,
@@ -15,7 +17,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Plus, Upload } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import {
@@ -84,7 +85,6 @@ export default function AddSongModal() {
       toast.success('Song created successfully');
     } catch (error) {
       console.error(error);
-      // toast.error('Failed to create album: ' + error.message);
     }
   };
 

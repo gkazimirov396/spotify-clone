@@ -2,6 +2,7 @@ import { RedirectToSignUp, useAuth } from '@clerk/clerk-react';
 import { useQuery } from '@tanstack/react-query';
 import { Outlet } from 'react-router-dom';
 
+import Unauthorized from '@/pages/Unauthorized';
 import LoaderElement from '@/components/LoaderElement';
 
 import authService from '@/services/auth';
@@ -23,5 +24,5 @@ export default function AdminRoute() {
 
   if (isLoading) return <LoaderElement />;
 
-  return !isSuccess || !isAdmin ? <h2>Unauthorized</h2> : <Outlet />;
+  return !isSuccess || !isAdmin ? <Unauthorized /> : <Outlet />;
 }
