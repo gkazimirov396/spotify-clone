@@ -18,8 +18,6 @@ import { formatMessageTime } from '@/utils/time';
 
 import spotifyLogo from '@/assets/images/spotify.png';
 
-if (Math.random() < 0.5) throw new Error('shit');
-
 export default function ChatPage() {
   const { user } = useUser();
   const { showBoundary } = useErrorBoundary();
