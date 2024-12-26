@@ -19,6 +19,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
+import { displayValidationErrors, ServerError } from '@/utils/errors';
+
 export default function AddAlbumModal() {
   const queryClient = useQueryClient();
 
@@ -29,7 +31,7 @@ export default function AddAlbumModal() {
 
   const { mutateAsync: createAlbum, isPending } = useMutation({
     mutationFn: albumService.createAlbum,
-    onError: error => toast.error(error.message),
+    onError: (error: ServerError) => displayValidationErrors(error),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['albums'] }),
   });
 

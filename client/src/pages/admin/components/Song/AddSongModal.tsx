@@ -27,6 +27,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { displayValidationErrors, ServerError } from '@/utils/errors';
+
 interface Files {
   audio: File | null;
   image: File | null;
@@ -51,7 +53,7 @@ export default function AddSongModal() {
 
   const { mutateAsync: createSong, isPending } = useMutation({
     mutationFn: songService.createSong,
-    onError: error => toast.error(error.message),
+    onError: (error: ServerError) => displayValidationErrors(error),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['songs'] }),
   });
 

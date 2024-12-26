@@ -27,7 +27,17 @@ export function validateRequest(validators: RequestValidators): RequestHandler {
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        const err = new ServerError(422, null, error.errors);
+        const validationErrors = error.format() as any;
+        const validationPaths = Object.keys(validationErrors).slice(1);
+
+        const err = new ServerError(
+          422,
+          null,
+          validationPaths.map(path => ({
+            path,
+            message: validationErrors[path]._errors[0],
+          }))
+        );
 
         next(err);
       }
