@@ -1,4 +1,4 @@
-import { RedirectToSignUp, useAuth } from '@clerk/clerk-react';
+import { RedirectToSignIn, useAuth } from '@clerk/clerk-react';
 import { useQuery } from '@tanstack/react-query';
 import { Outlet } from 'react-router-dom';
 
@@ -20,7 +20,7 @@ export default function AdminRoute() {
     staleTime: Infinity,
   });
 
-  if (!isSignedIn) return <RedirectToSignUp />;
+  if (!isSignedIn) return <RedirectToSignIn />;
 
   if (isLoading) return <LoaderElement />;
 
