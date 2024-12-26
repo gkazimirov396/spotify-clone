@@ -8,4 +8,9 @@ const axios = Axios.create({
 export const formDataHeaders = new AxiosHeaders();
 formDataHeaders.setContentType('multipart/form-data');
 
+export const updateApiToken = (token: string | null) => {
+  if (token) axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  else delete axios.defaults.headers.common['Authorization'];
+};
+
 export default axios;

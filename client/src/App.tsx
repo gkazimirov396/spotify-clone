@@ -4,18 +4,12 @@ import { RouterProvider } from 'react-router-dom';
 import { useAuth } from '@clerk/clerk-react';
 import { Toaster } from 'react-hot-toast';
 
-import axios from './lib/axios';
-
+import { updateApiToken } from './lib/axios';
 import { useChatStore } from './store/chat';
 
 import LoaderElement from './components/LoaderElement';
 
 import { router } from './router/router';
-
-const updateApiToken = (token: string | null) => {
-  if (token) axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  else delete axios.defaults.headers.common['Authorization'];
-};
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
