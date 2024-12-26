@@ -2,11 +2,8 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import { ClerkProvider } from '@clerk/clerk-react';
-import { ErrorBoundary } from 'react-error-boundary';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-import ErrorPage from './pages/Error.tsx';
 
 import { RoutePath } from './router/path.ts';
 
@@ -27,12 +24,10 @@ createRoot(document.getElementById('root')!).render(
       publishableKey={PUBLISHABLE_KEY}
       afterSignOutUrl={RoutePath.HOME}
     >
-      <ErrorBoundary FallbackComponent={ErrorPage}>
-        <QueryClientProvider client={queryClient}>
-          <App />
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-      </ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <App />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </ClerkProvider>
   </StrictMode>
 );
