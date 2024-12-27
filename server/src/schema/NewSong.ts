@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { Song } from '../models/Song';
 
 import { ValidMongoId } from './MongoId';
+import { Album } from '../models/Album';
 
 export const NewSongSchema = z.object({
   title: z
@@ -17,8 +18,19 @@ export const NewSongSchema = z.object({
       { message: 'Song with that title already exists!' }
     ),
   artist: z.string().min(2),
-  duration: z.coerce.number().gte(10),
-  albumId: ValidMongoId.optional(),
+  duration: z.coerce.number().gte(7),
+  albumId: ValidMongoId.optional().refine(
+    async albumId => {
+      if (albumId) {
+        const album = await Album.findById(albumId);
+
+        return album !== null;
+      }
+
+      return true;
+    },
+    { message: 'Album, you are trying to add the song to, does not exist!' }
+  ),
 });
 
 export type NewSong = z.infer<typeof NewSongSchema>;

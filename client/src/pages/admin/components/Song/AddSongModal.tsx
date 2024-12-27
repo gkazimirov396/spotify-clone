@@ -216,7 +216,7 @@ export default function AddSongModal() {
               </Label>
               <Input
                 type="number"
-                min={0}
+                min={7}
                 id="duration"
                 name="duration"
                 className="bg-zinc-800 border-zinc-700"
