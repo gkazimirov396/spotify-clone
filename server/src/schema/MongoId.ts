@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { isValidObjectId } from 'mongoose';
 
-export const ValidMongoId = z.custom<boolean>(
+export const ValidMongoId = z.custom<string>(
   data => isValidObjectId(data),
   'Invalid id.'
 );
