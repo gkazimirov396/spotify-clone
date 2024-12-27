@@ -14,6 +14,7 @@ import MessageInput from './components/MessageInput';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 
+import { cn } from '@/lib/utils';
 import { formatMessageTime } from '@/utils/time';
 
 import spotifyLogo from '@/assets/images/spotify.png';
@@ -55,35 +56,38 @@ export default function ChatPage() {
 
               <ScrollArea className="h-[calc(100vh-340px)]">
                 <ul className="p-4 space-y-4">
-                  {messages.map(message => (
-                    <li
-                      key={message._id}
-                      className={`flex items-start gap-3 ${
-                        message.senderId === user?.id ? 'flex-row-reverse' : ''
-                      }`}
-                    >
-                      <Avatar className="size-8">
-                        <AvatarImage
-                          src={
-                            message.senderId === user?.id
-                              ? user.imageUrl
-                              : selectedUser.imageUrl
-                          }
-                        />
-                      </Avatar>
+                  {messages.map(message => {
+                    const isUserSender = message.senderId === user?.id;
 
-                      <div
-                        className={`rounded-lg p-3 max-w-[70%]
-													${message.senderId === user?.id ? 'bg-green-500' : 'bg-zinc-800'}
+                    const messageClasses = cn('flex items-start gap-3', {
+                      'flex-row-reverse': isUserSender,
+                    });
+
+                    return (
+                      <li key={message._id} className={messageClasses}>
+                        <Avatar className="size-8">
+                          <AvatarImage
+                            src={
+                              isUserSender
+                                ? user.imageUrl
+                                : selectedUser.imageUrl
+                            }
+                          />
+                        </Avatar>
+
+                        <div
+                          className={`rounded-lg p-3 max-w-[70%]
+													${isUserSender ? 'bg-green-500' : 'bg-zinc-800'}
 												`}
-                      >
-                        <p className="text-sm">{message.content}</p>
-                        <span className="block mt-1 text-xs text-zinc-300">
-                          {formatMessageTime(message.createdAt)}
-                        </span>
-                      </div>
-                    </li>
-                  ))}
+                        >
+                          <p className="text-sm">{message.content}</p>
+                          <span className="block mt-1 text-xs text-zinc-300">
+                            {formatMessageTime(message.createdAt)}
+                          </span>
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ul>
               </ScrollArea>
 

@@ -139,7 +139,7 @@ export default function AlbumPage() {
                           />
 
                           <div>
-                            <div className={`font-medium text-white`}>
+                            <div className="font-medium text-white">
                               {song.title}
                             </div>
 
