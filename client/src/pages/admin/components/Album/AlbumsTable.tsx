@@ -60,7 +60,10 @@ export default function AlbumsTable() {
         )}
         {isSuccess &&
           albums.map(album => (
-            <TableRow key={album._id} className="hover:bg-zinc-800/50">
+            <TableRow
+              key={album._id}
+              className="text-zinc-400 hover:bg-zinc-800/50"
+            >
               <TableCell>
                 <img
                   src={album.imageUrl}
@@ -73,14 +76,14 @@ export default function AlbumsTable() {
               <TableCell>{album.artist}</TableCell>
 
               <TableCell>
-                <span className="inline-flex items-center gap-1 text-zinc-400">
+                <span className="inline-flex items-center gap-1">
                   <Calendar className="w-4 h-4" />
                   {album.releaseYear}
                 </span>
               </TableCell>
 
               <TableCell>
-                <span className="inline-flex items-center gap-1 text-zinc-400">
+                <span className="inline-flex items-center gap-1">
                   <Music className="w-4 h-4" />
                   {album.songs.length} songs
                 </span>

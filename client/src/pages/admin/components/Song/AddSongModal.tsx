@@ -192,6 +192,8 @@ export default function AddSongModal() {
                 id="title"
                 name="title"
                 className="bg-zinc-800 border-zinc-700"
+                required
+                minLength={3}
               />
             </div>
 
@@ -203,6 +205,8 @@ export default function AddSongModal() {
                 id="artist"
                 name="artist"
                 className="bg-zinc-800 border-zinc-700"
+                required
+                minLength={2}
               />
             </div>
 
@@ -221,12 +225,12 @@ export default function AddSongModal() {
 
             <div className="space-y-2">
               <Label className="text-sm font-medium">Album (Optional)</Label>
-              <Select name="albumId">
+              <Select name="albumId" required>
                 <SelectTrigger className="bg-zinc-800 border-zinc-700">
                   <SelectValue placeholder="Select album" />
                 </SelectTrigger>
 
-                <SelectContent className="bg-zinc-800 border-zinc-700">
+                <SelectContent className="text-white bg-zinc-800 border-zinc-700">
                   <SelectItem value="none">No Album (Single)</SelectItem>
                   {isSuccess &&
                     albums.map(album => (
@@ -238,22 +242,25 @@ export default function AddSongModal() {
               </Select>
             </div>
           </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              className="text-black"
+              onClick={() => setIsModalOpen(false)}
+              disabled={isPending}
+            >
+              Cancel
+            </Button>
+
+            <Button
+              type="submit"
+              disabled={isPending || !files.audio || !files.image}
+            >
+              {isPending ? 'Uploading...' : 'Add Song'}
+            </Button>
+          </DialogFooter>
         </form>
-
-        <DialogFooter>
-          <Button
-            variant="outline"
-            className="text-black"
-            onClick={() => setIsModalOpen(false)}
-            disabled={isPending}
-          >
-            Cancel
-          </Button>
-
-          <Button disabled={isPending || !files.audio || !files.image}>
-            {isPending ? 'Uploading...' : 'Add Song'}
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
