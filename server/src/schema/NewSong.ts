@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
 import { Song } from '../models/Song';
+import { Album } from '../models/Album';
 
 import { ValidMongoId } from './MongoId';
-import { Album } from '../models/Album';
 
 export const NewSongSchema = z.object({
   title: z
