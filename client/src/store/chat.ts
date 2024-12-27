@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { AxiosError } from 'axios';
+import toast from 'react-hot-toast';
 import { io, type Socket } from 'socket.io-client';
 
 import axios from '@/lib/axios';
@@ -30,6 +31,10 @@ interface ChatStore {
 const baseURL =
   import.meta.env.MODE === 'development' ? 'http://localhost:5000' : '/';
 
+const initialSelectedUser = localStorage.getItem('selected-user')
+  ? (JSON.parse(localStorage.getItem('selected-user')!) as User)
+  : null;
+
 const socket: ChatStore['socket'] = io(baseURL, {
   autoConnect: false,
   withCredentials: true,
@@ -41,11 +46,15 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   onlineUsers: new Set(),
   userActivities: new Map(),
   messages: [],
-  selectedUser: null,
+  selectedUser: initialSelectedUser,
   isLoading: false,
   error: null,
 
-  setSelectedUser: user => set({ selectedUser: user }),
+  setSelectedUser: user => {
+    set({ selectedUser: user });
+
+    localStorage.setItem('selected-user', JSON.stringify(user));
+  },
 
   initSocket: userId => {
     if (!get().isConnected) {
@@ -115,6 +124,8 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     if (!socket) return;
 
     socket.emit('send_message', { receiverId, senderId, content });
+
+    socket.once('message_error', error => toast.error(error));
   },
 
   fetchMessages: async userId => {

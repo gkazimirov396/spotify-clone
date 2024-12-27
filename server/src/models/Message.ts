@@ -18,7 +18,7 @@ const messageSchema = new Schema<IMessage>(
     },
     content: {
       type: String,
-      maxLength: 225,
+      maxLength: [250, 'Message cannot be longer than 250 characters!'],
       required: true,
     },
   },

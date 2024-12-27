@@ -45,6 +45,14 @@ export const initializeSocket = (server: HTTPServer) => {
       try {
         const { senderId, receiverId, content } = data;
 
+        if (content.length > 250) {
+          const error = new Error(
+            'Message cannot be longer than 250 characters!'
+          );
+
+          throw error;
+        }
+
         const message = await Message.create({
           senderId,
           receiverId,
