@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { combine } from 'zustand/middleware';
 import { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import { io, type Socket } from 'socket.io-client';
@@ -11,136 +12,128 @@ import type {
   ServerToClientEvents,
 } from '@/types/socket';
 
-interface ChatStore {
-  socket: Socket<ServerToClientEvents, ClientToServerEvents>;
-  isConnected: boolean;
-  onlineUsers: Set<string>;
-  userActivities: Map<string, string>;
-  selectedUser: User | null;
-  messages: Message[];
-  isLoading: boolean;
-  error: string | null;
-
-  initSocket: (userId: string) => void;
-  disconnectSocket: () => void;
-  sendMessage: (receiverId: string, senderId: string, content: string) => void;
-  setSelectedUser: (user: User | null) => void;
-  fetchMessages: (userId: string) => Promise<void>;
-}
-
 const baseURL =
   import.meta.env.MODE === 'development' ? 'http://localhost:5000' : '/';
 
-const initialSelectedUser = localStorage.getItem('selected-user')
-  ? (JSON.parse(localStorage.getItem('selected-user')!) as User)
+const initialSelectedUser = sessionStorage.getItem('selected-user')
+  ? (JSON.parse(sessionStorage.getItem('selected-user')!) as User)
   : null;
 
-const socket: ChatStore['socket'] = io(baseURL, {
+const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(baseURL, {
   autoConnect: false,
   withCredentials: true,
 });
 
-export const useChatStore = create<ChatStore>((set, get) => ({
-  socket,
-  isConnected: false,
-  onlineUsers: new Set(),
-  userActivities: new Map(),
-  messages: [],
-  selectedUser: initialSelectedUser,
-  isLoading: false,
-  error: null,
+export const useChatStore = create(
+  combine(
+    {
+      socket,
+      isConnected: false,
+      onlineUsers: new Set<string>(),
+      userActivities: new Map<string, string>(),
+      messages: [] as Message[],
+      selectedUser: initialSelectedUser,
+      isLoading: false,
+      error: null,
+    },
+    (set, get) => ({
+      setSelectedUser: (user: User | null) => {
+        set({ selectedUser: user });
 
-  setSelectedUser: user => {
-    set({ selectedUser: user });
+        if (!user) return sessionStorage.removeItem('selected-user');
 
-    localStorage.setItem('selected-user', JSON.stringify(user));
-  },
+        sessionStorage.setItem('selected-user', JSON.stringify(user));
+      },
 
-  initSocket: userId => {
-    if (!get().isConnected) {
-      socket.auth = { userId };
-      socket.connect();
+      initSocket: (userId: string) => {
+        if (!get().isConnected) {
+          socket.auth = { userId };
+          socket.connect();
 
-      socket.emit('user_connected', userId);
+          socket.emit('user_connected', userId);
 
-      socket.on('users_online', users => {
-        set({ onlineUsers: new Set(users) });
-      });
+          socket.on('users_online', users => {
+            set({ onlineUsers: new Set(users) });
+          });
 
-      socket.on('activities', activities => {
-        set({ userActivities: new Map(activities) });
-      });
+          socket.on('activities', activities => {
+            set({ userActivities: new Map(activities) });
+          });
 
-      socket.on('user_connected', userId => {
-        set(state => ({
-          onlineUsers: new Set([...state.onlineUsers, userId]),
-        }));
-      });
+          socket.on('user_connected', userId => {
+            set(state => ({
+              onlineUsers: new Set([...state.onlineUsers, userId]),
+            }));
+          });
 
-      socket.on('user_disconnected', userId => {
-        set(state => {
-          const newOnlineUsers = new Set(state.onlineUsers);
-          newOnlineUsers.delete(userId);
+          socket.on('user_disconnected', userId => {
+            set(state => {
+              const newOnlineUsers = new Set(state.onlineUsers);
+              newOnlineUsers.delete(userId);
 
-          return { onlineUsers: newOnlineUsers };
-        });
-      });
+              return { onlineUsers: newOnlineUsers };
+            });
+          });
 
-      socket.on('receive_message', message => {
-        set(state => ({
-          messages: [...state.messages, message],
-        }));
-      });
+          socket.on('receive_message', message => {
+            set(state => ({
+              messages: [...state.messages, message],
+            }));
+          });
 
-      socket.on('message_sent', message => {
-        set(state => ({
-          messages: [...state.messages, message],
-        }));
-      });
+          socket.on('message_sent', message => {
+            set(state => ({
+              messages: [...state.messages, message],
+            }));
+          });
 
-      socket.on('activity_updated', ({ userId, activity }) => {
-        set(state => {
-          const newActivities = new Map(state.userActivities);
-          newActivities.set(userId, activity);
+          socket.on('activity_updated', ({ userId, activity }) => {
+            set(state => {
+              const newActivities = new Map(state.userActivities);
+              newActivities.set(userId, activity);
 
-          return { userActivities: newActivities };
-        });
-      });
+              return { userActivities: newActivities };
+            });
+          });
 
-      set({ isConnected: true });
-    }
-  },
+          set({ isConnected: true });
+        }
+      },
 
-  disconnectSocket: () => {
-    if (get().isConnected) {
-      socket.disconnect();
+      disconnectSocket: () => {
+        if (get().isConnected) {
+          socket.disconnect();
 
-      set({ isConnected: false });
-    }
-  },
+          set({ isConnected: false });
+        }
+      },
 
-  sendMessage: (receiverId, senderId, content) => {
-    const socket = get().socket;
-    if (!socket) return;
+      sendMessage: (receiverId: string, senderId: string, content: string) => {
+        const socket = get().socket;
+        if (!socket) return;
 
-    socket.emit('send_message', { receiverId, senderId, content });
+        socket.emit('send_message', { receiverId, senderId, content });
 
-    socket.once('message_error', error => toast.error(error));
-  },
+        socket.once('message_error', error => toast.error(error));
+      },
 
-  fetchMessages: async userId => {
-    set({ isLoading: true, error: null });
+      fetchMessages: async (userId: string) => {
+        set({ isLoading: true, error: null });
 
-    try {
-      const response = await axios.get<Message[]>(`/users/messages/${userId}`);
+        try {
+          const response = await axios.get<Message[]>(
+            `/users/messages/${userId}`
+          );
 
-      set({ messages: response.data });
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        set({ error: error.response?.data.message });
-      }
-    } finally {
-      set({ isLoading: false });
-    }
-  },
-}));
+          set({ messages: response.data });
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            set({ error: error.response?.data.message });
+          }
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+    })
+  )
+);
