@@ -14,6 +14,7 @@ const albumSchema = new Schema<IAlbum>(
   {
     title: {
       type: String,
+      unique: true,
       required: true,
     },
     artist: {

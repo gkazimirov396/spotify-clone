@@ -16,8 +16,11 @@ export type ServerError = AxiosError<ErrorResponse>;
 
 export const displayValidationErrors = (error: ServerError) => {
   const errorResponse = error?.response?.data;
+  const errorPayload = errorResponse?.payload;
 
-  errorResponse?.payload.forEach(error =>
-    toast.error(`Error at ${error.path}: ${error.message}`)
-  );
+  if (errorPayload) {
+    errorPayload.forEach(error =>
+      toast.error(`Error at ${error.path}: ${error.message}`)
+    );
+  }
 };
