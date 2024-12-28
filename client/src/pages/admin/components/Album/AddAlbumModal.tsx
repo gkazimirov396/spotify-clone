@@ -107,11 +107,7 @@ export default function AddAlbumModal() {
                   {imageFile ? imageFile.name : 'Upload album artwork'}
                 </div>
 
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="text-xs text-black"
-                >
+                <Button variant="outline" className="text-sm bg-zinc-800">
                   Choose File
                 </Button>
               </div>
@@ -166,7 +162,7 @@ export default function AddAlbumModal() {
           <DialogFooter>
             <Button
               variant="outline"
-              className="text-black"
+              className="bg-zinc-700"
               onClick={() => setIsModalOpen(false)}
               disabled={isPending}
             >
@@ -175,7 +171,7 @@ export default function AddAlbumModal() {
 
             <Button
               type="submit"
-              className="bg-violet-500 hover:bg-violet-600"
+              className="text-white bg-violet-500 hover:bg-violet-600"
               disabled={isPending || !imageFile}
             >
               {isPending ? 'Creating...' : 'Add Album'}

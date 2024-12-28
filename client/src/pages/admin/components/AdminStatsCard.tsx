@@ -27,7 +27,7 @@ export default function AdminStatsCard({
 
           <div>
             <p className="text-sm text-zinc-400">{label}</p>
-            <p className="text-2xl font-bold">{value}</p>
+            <p className="text-2xl font-bold text-zinc-400">{value}</p>
           </div>
         </div>
       </CardContent>

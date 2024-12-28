@@ -159,7 +159,7 @@ export default function AddSongModal() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="text-xs text-black"
+                      className="text-xs bg-zinc-800"
                     >
                       Choose File
                     </Button>
@@ -175,7 +175,7 @@ export default function AddSongModal() {
                 <Button
                   variant="outline"
                   onClick={() => audioInputRef.current?.click()}
-                  className="w-full text-black"
+                  className="w-full bg-zinc-800"
                 >
                   {files.audio
                     ? files.audio.name.slice(0, 20)
@@ -246,7 +246,7 @@ export default function AddSongModal() {
           <DialogFooter>
             <Button
               variant="outline"
-              className="text-black"
+              className="bg-zinc-700"
               onClick={() => setIsModalOpen(false)}
               disabled={isPending}
             >

@@ -56,10 +56,7 @@ export default function SongTable() {
         )}
         {isSuccess &&
           songs.map(song => (
-            <TableRow
-              key={song._id}
-              className="text-black hover:bg-zinc-800/50"
-            >
+            <TableRow key={song._id} className="hover:bg-zinc-800/50">
               <TableCell>
                 <img
                   src={song.imageUrl}
