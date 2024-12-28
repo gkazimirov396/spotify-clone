@@ -3,7 +3,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { createBrowserRouter, Outlet } from 'react-router-dom';
 
 import NotFound from '@/pages/NotFound';
-import AlbumPage from '@/pages/AlbumPage';
+import AlbumPage from '@/pages/album/AlbumPage';
 import ChatPage from '@/pages/chat/ChatPage';
 import HomePage from '@/pages/home/HomePage';
 import AuthCallback from '@/pages/AuthCallback';
