@@ -12,7 +12,7 @@ const authCallback: RequestHandlerWithBody<NewUser> = async (
   const { id, userName, imageUrl } = req.body;
 
   try {
-    const user = await User.findOne({ clerkId: id });
+    const user = await User.findOne({ $or: [{ clerkId: id }, { userName }] });
 
     if (!user) {
       await User.create({
