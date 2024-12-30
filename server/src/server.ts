@@ -32,6 +32,7 @@ const app = express();
 const httpServer = createServer(app);
 
 const PORT = env.PORT;
+const tempDir = path.join(process.cwd(), 'temp');
 
 initializeSocket(httpServer);
 
@@ -44,7 +45,7 @@ app.use(
 app.use(
   fileUpload({
     useTempFiles: true,
-    tempFileDir: path.join(__dirname, 'temp'),
+    tempFileDir: tempDir,
     createParentPath: true,
     limits: {
       fileSize: MAX_TEMP_FILE_SIZE,
@@ -66,8 +67,6 @@ app.use(express.json());
 app.use(mongoSanitize());
 app.use(express.urlencoded({ extended: true }));
 app.use(clerkMiddleware());
-
-const tempDir = path.join(process.cwd(), 'temp');
 
 cron.schedule('0 * * * *', () => {
   if (existsSync(tempDir)) {

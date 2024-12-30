@@ -93,7 +93,7 @@ export default function AddSongModal() {
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogTrigger asChild>
-        <Button className="text-black bg-emerald-500 hover:bg-emerald-600">
+        <Button className="text-white bg-emerald-500 hover:bg-emerald-600">
           <Plus className="w-4 h-4 mr-2" />
           Add Song
         </Button>

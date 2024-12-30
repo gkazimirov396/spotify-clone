@@ -33,7 +33,7 @@ export default function MessageInput() {
           className="border-none bg-zinc-800"
           onKeyDown={e => e.key === 'Enter' && handleSend()}
           required
-          maxLength={225}
+          maxLength={250}
         />
 
         <Button size="icon" onClick={handleSend} disabled={!newMessage.trim()}>
