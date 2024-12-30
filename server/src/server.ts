@@ -1,15 +1,18 @@
+import { readdir, unlink } from 'node:fs/promises';
 import { createServer } from 'node:http';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
-import fs from 'node:fs';
-
-import express from 'express';
 
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cron from 'node-cron';
+import express from 'express';
+import compression from 'compression';
 import fileUpload from 'express-fileupload';
+import { rateLimit } from 'express-rate-limit';
 import { clerkMiddleware } from '@clerk/express';
+import mongoSanitize from 'express-mongo-sanitize';
 
 import { env } from './config/env';
 import { connectDB } from './config/db';
@@ -19,7 +22,11 @@ import apiRoutes from './routes';
 
 import errorController from './controllers/errorController';
 
-import { MAX_TEMP_FILE_SIZE } from './utils/constants';
+import {
+  MAX_TEMP_FILE_SIZE,
+  MAX_WINDOW_LIFETIME,
+  MAX_REQUESTS_PER_WNDOW,
+} from './utils/constants';
 
 const app = express();
 const httpServer = createServer(app);
@@ -44,26 +51,33 @@ app.use(
     },
   })
 );
+app.use(
+  rateLimit({
+    windowMs: MAX_WINDOW_LIFETIME,
+    limit: MAX_REQUESTS_PER_WNDOW,
+    standardHeaders: true,
+    legacyHeaders: false,
+  })
+);
 app.use(helmet());
 app.use(morgan('dev'));
+app.use(compression());
 app.use(express.json());
+app.use(mongoSanitize());
 app.use(express.urlencoded({ extended: true }));
 app.use(clerkMiddleware());
 
 const tempDir = path.join(process.cwd(), 'temp');
 
 cron.schedule('0 * * * *', () => {
-  if (fs.existsSync(tempDir)) {
-    fs.readdir(tempDir, (err, files) => {
-      if (err) {
-        console.log('error', err);
-        return;
-      }
-
-      for (const file of files) {
-        fs.unlink(path.join(tempDir, file), err => {});
-      }
-    });
+  if (existsSync(tempDir)) {
+    readdir(tempDir)
+      .then(files => {
+        for (const file of files) {
+          unlink(path.join(tempDir, file));
+        }
+      })
+      .catch(console.error);
   }
 });
 

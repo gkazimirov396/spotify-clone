@@ -1,4 +1,6 @@
 export const MAX_TEMP_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+export const MAX_WINDOW_LIFETIME = 15 * 60 * 1000; // 15 minutes
+export const MAX_REQUESTS_PER_WNDOW = 150;
 
 export const CURRENT_YEAR = new Date().getFullYear();
 
