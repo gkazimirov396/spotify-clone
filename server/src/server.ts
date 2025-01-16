@@ -58,6 +58,8 @@ app.use(
     limit: MAX_REQUESTS_PER_WNDOW,
     standardHeaders: true,
     legacyHeaders: false,
+    message:
+      'We have received too many requests from you. Please try again later.',
   })
 );
 app.use(helmet());
