@@ -1,7 +1,10 @@
 import Axios, { AxiosHeaders } from 'axios';
 
 const axios = Axios.create({
-  baseURL: 'http://localhost:5000/api/v1',
+  baseURL:
+    import.meta.env.MODE === 'development'
+      ? 'http://localhost:5000/api/v1'
+      : '/api/v1',
   timeout: 8000,
 });
 
