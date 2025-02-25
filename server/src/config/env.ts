@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 const EnvSchema = z.object({
   ADMIN_EMAIL: z.string().email(),
-  PORT: z.coerce.number().int().gte(80).default(5000),
+  PORT: z.coerce.number().int().gte(80),
   NODE_ENV: z.enum(['production', 'development']).default('development'),
 
   MONGO_URI: z.string().startsWith('mongodb+srv://').includes('.mongodb.net'),

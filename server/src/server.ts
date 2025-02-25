@@ -31,7 +31,7 @@ import {
 const app = express();
 const httpServer = createServer(app);
 
-const PORT = process.env.PORT ?? 9000;
+const PORT = env.PORT;
 const tempDir = path.join(process.cwd(), 'temp');
 
 initializeSocket(httpServer);
